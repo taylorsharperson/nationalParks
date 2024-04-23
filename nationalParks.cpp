@@ -59,17 +59,59 @@ con = driver->connect("tcp://127.0.0.1:3306", "root", "");
  con->setSchema("nationalParks");
  //stmt = con->createStatement();
     
- int option = 7;
+ int option = 14;
  
- while (option != 6) {
+ while (option != 13) {
      
      cout << endl;
-     cout << "1. Add a park" << endl;
-     cout << "2. Find a park by name" << endl;
-     cout << "3. Find an activity by park" << endl;
-     cout << "4. Show all parks" << endl;
-     cout << "5. Delete a park" << endl;
-     cout << "6. Exit" << endl << endl;
+     cout << "1. Show all Parks" << endl;
+     cout << "2. Show all Visitors" << endl;
+     cout << "3. Show all Incidents" << endl;
+     cout << "4. Show all Activities" << endl;
+     cout << "5. Find by Park ID" << endl;
+     cout << "6. Find by Activity ID" << endl;
+     cout << "7. Find the oldest park" << endl;
+     cout << "8. Add a park" << endl;
+     cout << "9. Delete a park" << endl;
+     cout << "10. Delete a visitor" << endl;
+     cout << "11. Add a visitor" << endl;
+     cout << "12. Total number of parks" << endl;
+     cout << "13. Exit" << endl << endl;
+     
+     cout << "Choice : ";
+     cin >> option;
+     
+     switch(option) {
+        
+	case 1: findallParks();
+		break;
+        case 2: findallActivities();
+                 break;
+	case 3: findallVisitors();
+		break;
+        case 4: findallIncidents();
+                 break;
+        case 5: findbyparkID();
+                 break;
+        case 6: findbyActivity();
+                 break;
+        case 7: oldestPark();
+                 break;
+        case 8: insertPark();
+                 break;
+        case 9: deletePark();
+                 break;
+        case 10: deleteVisitors();
+                 break;
+        case 11: updateVisitors();
+                 break;
+        case 12: getTotalParks();
+                 break;
+        case 13: break;  
+             
+     }
+ }
+ 
      
      cout << "Choice : ";
      cin >> option;

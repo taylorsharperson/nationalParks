@@ -87,11 +87,11 @@ con = driver->connect("tcp://127.0.0.1:3306", "root", "");
         
 		case 1: findallParks();
 				break;
-        case 2: findallActivities();
+        case 2: findallVisitors();
                  break;
-		case 3: findallVisitors();
+		case 3: findallIncidents();
 				break;
-        case 4: findallIncidents();
+        case 4: findallActivities();
                  break;
         case 5: findbyparkID();
                 break;
@@ -175,7 +175,7 @@ void findallActivities() {
 void findallVisitors() {
      
  stmt = con->createStatement();
- res = stmt->executeQuery("SELECT * from visitors");
+ res = stmt->executeQuery("SELECT * from visitor");
     
  while (res->next()) {
  
@@ -262,6 +262,7 @@ res = prep_stmt->executeQuery();
 void oldestPark(){
  stmt = con->createStatement();
  res = stmt->executeQuery("SELECT parkName, min(yearCreated) from parks");
+ cout << "The oldest park is: " << parkName << " in " << yearCreated;
 }
 
 void insertPark() {

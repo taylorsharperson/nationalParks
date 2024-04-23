@@ -38,6 +38,7 @@ void oldestPark();
 void insertPark();
 void deletePark();
 void deleteVisitors();
+void insertVisitors();
 void updateVisitors();
 void getTotalParks();
 
@@ -59,9 +60,9 @@ con = driver->connect("tcp://127.0.0.1:3306", "root", "");
  con->setSchema("nationalParks");
  //stmt = con->createStatement();
     
- int option = 14;
+ int option = 13;
  
- while (option != 13) {
+ while (option != 14) {
      
      cout << endl;
      cout << "1. Show all Parks" << endl;
@@ -75,24 +76,25 @@ con = driver->connect("tcp://127.0.0.1:3306", "root", "");
      cout << "9. Delete a park" << endl;
      cout << "10. Delete a visitor" << endl;
      cout << "11. Add a visitor" << endl;
-     cout << "12. Total number of parks" << endl;
-     cout << "13. Exit" << endl << endl;
+     cout << "12. Update a visitor" << endl;
+     cout << "13. Total number of parks" << endl;
+     cout << "14. Exit" << endl << endl;
      
      cout << "Choice : ";
      cin >> option;
      
      switch(option) {
         
-	case 1: findallParks();
-		break;
+		case 1: findallParks();
+				break;
         case 2: findallActivities();
                  break;
-	case 3: findallVisitors();
-		break;
+		case 3: findallVisitors();
+				break;
         case 4: findallIncidents();
                  break;
         case 5: findbyparkID();
-                 break;
+                break;
         case 6: findbyActivity();
                  break;
         case 7: oldestPark();
@@ -103,37 +105,13 @@ con = driver->connect("tcp://127.0.0.1:3306", "root", "");
                  break;
         case 10: deleteVisitors();
                  break;
-        case 11: updateVisitors();
+        case 11: insertVisitors();
                  break;
-        case 12: getTotalParks();
+        case 12: updateVisitors();
                  break;
-        case 13: break;  
-             
-     }
- }
- 
-     
-     cout << "Choice : ";
-     cin >> option;
-     
-     switch(option) {
-        
-				 case 1: insertPark();
-				         break;
-
-         case 2: findbyparkID();
+        case 13: getTotalParks();
                  break;
-
-				case 3: findbyActivity();
-				         break;
-             
-         case 4: findallParks();
-                 break;
-
-         case 5: deletePark();
-                 break;
-
-          case 6: break;  
+        case 14: break;  
              
      }
  }
@@ -170,12 +148,67 @@ return EXIT_SUCCESS;
      cout << res->getString("city") << " ";
      cout << res->getString("numParkVisitors") << " ";
      cout << res->getString("entryPrice") << endl;
-
- 
  }
      
  }
 
+void findallActivities() {
+     
+ stmt = con->createStatement();
+ res = stmt->executeQuery("SELECT * from activities");
+    
+ while (res->next()) {
+ 
+ /* Access column data by alias or column name */
+     
+     cout << res->getString("activityID") << " ";
+     cout << res->getString("activityName") << " ";
+     cout << res->getString("activityTime") << " ";
+     cout << res->getString("activityHost") << " ";
+     cout << res->getString("activityDays") << " ";
+     cout << res->getString("activityAge") << " ";
+     cout << res->getString("parkID") << endl;
+ }
+     
+ }
+
+void findallVisitors() {
+     
+ stmt = con->createStatement();
+ res = stmt->executeQuery("SELECT * from visitors");
+    
+ while (res->next()) {
+ 
+ /* Access column data by alias or column name */
+     
+     cout << res->getString("visitorName") << " ";
+     cout << res->getString("timesVisited") << " ";
+     cout << res->getString("email") << " ";
+     cout << res->getString("phoneNumber") << " ";
+     cout << res->getString("numVisitors") << " ";
+     cout << res->getString("parkID") << endl;
+
+ }
+     
+ }
+void findallIncidents() {
+     
+ stmt = con->createStatement();
+ res = stmt->executeQuery("SELECT * from incidents");
+    
+ while (res->next()) {
+ 
+ /* Access column data by alias or column name */
+     
+     cout << res->getString("incidentID") << " ";
+     cout << res->getString("incidentName") << " ";
+     cout << res->getString("incidentTime") << " ";
+     cout << res->getString("incidentLocation") << " ";
+     cout << res->getString("injuryType") << " ";
+     cout << res->getString("parkID") << endl;
+ }
+     
+ }
  void findbyparkID() {
      
  int parkID;
@@ -204,8 +237,34 @@ res = prep_stmt->executeQuery();
  }
      
  }
+void findbyActivity() {
+int activityID;
+ cout << "Enter the activity ID: ";
+ cin >> activityID;
+    
+prep_stmt = con->prepareStatement("SELECT * FROM activities WHERE activityID = ?");
+prep_stmt->setInt(1, activityID);
+res = prep_stmt->executeQuery();
 
- void insertPark() {
+ while (res->next()) {
+
+ /* Access column data by alias or column name */
+     
+     cout << res->getString("activityID") << " ";
+     cout << res->getString("activityName") << " ";
+     cout << res->getString("activityTime") << " ";
+     cout << res->getString("activityHost") << " ";
+     cout << res->getString("activityDays") << " ";
+     cout << res->getInt("activityAge") << " " << endl;
+
+ } }
+
+void oldestPark(){
+ stmt = con->createStatement();
+ res = stmt->executeQuery("SELECT parkName, min(yearCreated) from parks");
+}
+
+void insertPark() {
 
 int parkID, yearCreated, numParkVisitors;
 string entryPrice, parkName, state, city;
@@ -247,31 +306,6 @@ prep_stmt->execute();
 
 }
 
-void findbyActivity() {
-
-int activityID;
-    
- cout << "Enter the activity ID: ";
- cin >> activityID;
-    
-prep_stmt = con->prepareStatement("SELECT activities.activityID, activities.activityName, activities.activityTime, activities.activityDays, activities.activityAge, parks.parkID" 
-                                          "FROM activities join parks" 
-                                          " USING activities.parkID = parks.parkID ");
-prep_stmt->setInt(1, activityID);
-res = prep_stmt->executeQuery();
-
- while (res->next()) {
-
- /* Access column data by alias or column name */
-     
-     cout << res->getString("activityName") << " ";
-     cout << res->getString("activityTime") << " ";
-     cout << res->getString("activityDays") << " ";
-     cout << res->getString("activityAge") << " ";
-     cout << res->getInt("activityID") << " " << endl;
-
- } }
-
 void deletePark(){
     int parkID;
 
@@ -283,4 +317,103 @@ void deletePark(){
 
     prep_stmt->execute();
     cout << "Park ID " << parkID << " deleted." << endl;
+}
+
+void deleteVisitors(){
+    string visitorName;
+
+    cout << "Enter the visitor name you want to delete: ";
+    cin >> visitorName;
+
+    prep_stmt = con->prepareStatement("DELETE FROM visitor WHERE visitorName=?");
+    prep_stmt->setString(1, visitorName);
+
+    prep_stmt->execute();
+    cout << "Visitor Name " << visitorName << " deleted." << endl;
+}
+
+
+void insertVisitors() {
+
+int timesVisited, numVisitors, parkID;
+string visitorName, email, phoneNumber;
+    
+ cout << "Enter visitor name: ";
+ cin >> visitorName;
+ 
+ cout << "Enter times visited: ";
+ cin >> timesVisited;
+ 
+ cout << "Enter email: ";
+ cin >> email;
+
+ cout << " Enter phone number: ";
+ cin >> phoneNumber;
+
+ cout << "Enter number of visitors: ";
+ cin >> numVisitors;
+
+cout << "Enter park ID: ";
+cin >> parkID;
+ 
+prep_stmt = con->prepareStatement("INSERT INTO visitor (visitorName, timesVisited, email, phoneNumber, numVisitors, parkID) " \
+                                   "VALUES(?,?,?,?,?,?) ");
+                                                                                                  
+prep_stmt->setString(1, visitorName);
+prep_stmt->setInt(2, timesVisited);
+prep_stmt->setString(3, email);
+prep_stmt->setString(4, phoneNumber);
+prep_stmt->setInt(5, numVisitors);
+prep_stmt->setInt(6, parkID);
+
+prep_stmt->execute();
+
+}
+
+void updateVisitors(){
+int timesVisited, numVisitors, parkID;
+string visitorName, email, phoneNumber;
+
+ cout << "Enter visitor name you want to update: ";
+ cin >> visitorName;
+ 
+ cout << "Update times visited: ";
+ cin >> timesVisited;
+ 
+ cout << "Update email: ";
+ cin >> email;
+
+ cout << " Update phone number: ";
+ cin >> phoneNumber;
+
+ cout << "Update number of visitors: ";
+ cin >> numVisitors;
+
+cout << "Update park ID: ";
+cin >> parkID;
+
+    prep_stmt = con->prepareStatement("UPDATE Visitor "
+                                      "SET visitorName=?, timesVisited=?, email=?, phoneNumber=?, numVisitors=?, parkID "
+                                      "WHERE visitorName=?");
+
+prep_stmt->setString(1, visitorName);
+prep_stmt->setInt(2, timesVisited);
+prep_stmt->setString(3, email);
+prep_stmt->setString(4, phoneNumber);
+prep_stmt->setInt(5, numVisitors);
+prep_stmt->setInt(6, parkID);
+
+    prep_stmt->execute();
+
+    cout << "Visitor updated" << endl;
+}
+
+
+void getTotalParks(){
+    prep_stmt = con->prepareStatement("SELECT COUNT(parkID) AS Total Parks FROM parks");
+    res = prep_stmt->executeQuery();
+
+    if (res->next()) {
+        cout << "Number of parks: " << res->getInt("Total Parks") << endl;
+    }
 }

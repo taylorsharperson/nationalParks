@@ -34,11 +34,12 @@ void findallVisitors();
 void findallIncidents();
 void findbyparkID();
 void findbyActivity();
+void oldestPark();
 void insertPark();
 void deletePark();
-void deleteVisitor
-void updateVisitors;
-void updateIncidents;
+void deleteVisitors();
+void updateVisitors();
+void getTotalParks();
 
 
 int main(void)

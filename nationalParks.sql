@@ -68,7 +68,6 @@ insert into visitor values('Beyonce Carter', 1, 'beyhive@gmail.com', '404-223-39
 insert into visitor values('Rihanna Knowles', 10, 'rih@gmail.com', '813-393-9853', 4, 3);
 insert into visitor values('Ashley Carter', 40, 'ash@gmail.com', '803-393-2853', 5, 5);
 
-
 insert into activities values(1, 'Hiking', '10:00', 'Park Rangers', 'Weekends', 12,3 );
 insert into activities values(2, 'Camping', '9:00', 'Adventure Team', 'MWF', 8, 1);
 insert into activities values(3, 'Fishing', '7:00', 'Fishing Team', 'Everyday', 5, 2);
@@ -79,4 +78,4 @@ insert into incidents values(1, 'Fall from cliff', '15:00', 'Trail C', 'Broken a
 insert into incidents values(2, 'Encounter with an animal', '13:00', 'Campground B', 'Cuts and bruises', 3);
 insert into incidents values(3, 'Trip and fall', '9:00', 'Welcome Center', 'Sprained ankle', 2);
 insert into incidents values(4, 'Caught in Wildfire', '18:00', 'Forest Trail', 'Smoke inhalation', 1);
-insert into incidents values(4, 'Poision Ivy', '10:00', 'Forest Trail B', 'Itchy', 5);
+insert into incidents values(5, 'Poision Ivy', '10:00', 'Forest Trail B', 'Itchy', 5);

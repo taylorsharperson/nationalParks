@@ -238,13 +238,13 @@ res = prep_stmt->executeQuery();
      
  }
 void findbyActivity() {
-int activityID;
- cout << "Enter the activity ID: ";
- cin >> activityID;
+//int activityID;
+//cout << "Enter the activity ID: ";
+//cin >> activityID;
     
-prep_stmt = con->prepareStatement("SELECT * FROM activities WHERE activityID = ?");
-prep_stmt->setInt(1, activityID);
-res = prep_stmt->executeQuery();
+prep_stmt = con->prepareStatement("SELECT activities.activityID, activities.activityName, activities.activityHost, activities.activityTime, activities.activityDays, activities.activityAge, parks.parkName, parks.parkID FROM activities JOIN parks ON (parks.parkID)");
+//prep_stmt->setInt(1, activityID);
+//res = prep_stmt->executeQuery();
 
  while (res->next()) {
 
@@ -255,11 +255,15 @@ res = prep_stmt->executeQuery();
      cout << res->getString("activityTime") << " ";
      cout << res->getString("activityHost") << " ";
      cout << res->getString("activityDays") << " ";
+     cout << res->getInt("parkID") << " ";
+     cout << res->getString("parkName") << " ";
      cout << res->getInt("activityAge") << " " << endl;
 
  } }
 
 void oldestPark(){
+string parkName;
+int yearCreated;
  stmt = con->createStatement();
  res = stmt->executeQuery("SELECT parkName, min(yearCreated) from parks");
  cout << "The oldest park is: " << parkName << " in " << yearCreated;
@@ -393,7 +397,7 @@ string visitorName, email, phoneNumber;
 cout << "Update park ID: ";
 cin >> parkID;
 
-    prep_stmt = con->prepareStatement("UPDATE Visitor "
+prep_stmt = con->prepareStatement("UPDATE Visitor "
                                       "SET visitorName=?, timesVisited=?, email=?, phoneNumber=?, numVisitors=?, parkID "
                                       "WHERE visitorName=?");
 
@@ -413,7 +417,6 @@ prep_stmt->setInt(6, parkID);
 void getTotalParks(){
     prep_stmt = con->prepareStatement("SELECT COUNT(parkID) AS Total Parks FROM parks");
     res = prep_stmt->executeQuery();
-
     if (res->next()) {
         cout << "Number of parks: " << res->getInt("Total Parks") << endl;
     }
